@@ -17,3 +17,5 @@ android/.gradle/
 android/build/
 *.keystore
 !debug.keystore
+apps/api/prisma/dev.db
+apps/api/.env

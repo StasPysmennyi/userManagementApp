@@ -1,0 +1,44 @@
+{
+  "name": "user-management-app",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "yarn@3.6.4",
+  "scripts": {
+    "web": "yarn workspace @uma/web dev",
+    "api": "yarn workspace @uma/api dev",
+    "mobile": "yarn workspace @uma/mobile start",
+    "mobile:ios": "yarn workspace @uma/mobile ios",
+    "mobile:android": "yarn workspace @uma/mobile android",
+    "build:web": "yarn workspace @uma/web build",
+    "build:api": "yarn workspace @uma/api build",
+    "lint": "yarn workspaces foreach -A run lint",
+    "type-check": "yarn workspaces foreach -A run type-check",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "apps/web/**/*.{ts,tsx}": [
+      "prettier --write"
+    ],
+    "apps/mobile/**/*.{ts,tsx}": [
+      "prettier --write"
+    ],
+    "apps/api/**/*.ts": [
+      "prettier --write"
+    ],
+    "packages/**/*.ts": [
+      "prettier --write"
+    ],
+    "**/*.{css,json,md}": [
+      "prettier --write"
+    ]
+  }
+}
