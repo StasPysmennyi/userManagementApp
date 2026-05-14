@@ -1,18 +1,29 @@
-import { z } from 'zod';
+import { z as ZOD } from 'zod';
 
-import { Role } from '../models/enums/role';
+import { Role } from '../models/enums';
 
-export const userFormSchema = z.object({
-  fullName: z
-    .string()
+export const userFormSchema = ZOD.object({
+  fullName: ZOD.string()
     .min(3, 'Full Name must be at least 3 characters')
     .max(50, 'Full Name must be at most 50 characters'),
-  role: z.nativeEnum(Role, { message: 'Role is required' }),
-  dateOfBirthday: z
-    .string()
+
+  role: ZOD.enum(Role, { message: 'Role is required' }),
+
+  dateOfBirthday: ZOD.iso
     .datetime({ offset: true, message: 'Must be a valid ISO date' })
+    .refine(val => new Date(val) <= new Date(), {
+      message: 'Date of birthday cannot be in the future',
+    })
     .optional()
-    .or(z.literal('')),
+    .or(ZOD.literal('')),
 });
 
-export type UserFormValues = z.infer<typeof userFormSchema>;
+export type UserFormValues = ZOD.infer<typeof userFormSchema>;
+
+export const userUpdateSchema = userFormSchema.partial().extend({
+  dateOfBirthday: ZOD.iso
+    .datetime({ offset: true, message: 'Must be a valid ISO date' })
+    .nullable()
+    .optional()
+    .or(ZOD.literal('')),
+});

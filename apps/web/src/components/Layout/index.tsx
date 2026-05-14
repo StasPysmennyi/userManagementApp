@@ -1,9 +1,11 @@
 import { type ReactNode } from 'react';
-import { Link, useLocation } from 'react-router';
-import { motion } from 'motion/react';
 
-import { cn } from 'src/utils';
+import { motion } from 'motion/react';
+import { Link, useLocation } from 'react-router';
+
 import { Icons } from 'src/components';
+
+import { classNames } from 'src/utils';
 
 type Props = {
   children: ReactNode;
@@ -26,7 +28,7 @@ export const Layout = ({ children }: Props) => {
           <nav className="flex items-center gap-2">
             <Link
               to="/"
-              className={cn(
+              className={classNames(
                 'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive('/')
                   ? 'bg-indigo-50 text-indigo-600'
@@ -34,20 +36,10 @@ export const Layout = ({ children }: Props) => {
               )}>
               Users
             </Link>
-            <Link
-              to="/users/new"
-              className={cn(
-                'inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                isActive('/users/new')
-                  ? 'bg-indigo-50 text-indigo-600'
-                  : 'text-slate-600 hover:bg-slate-100',
-              )}>
-              <Icons.PlusIcon width={16} height={16} />
-              Add User
-            </Link>
           </nav>
         </div>
       </header>
+
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <motion.div
           key={location.pathname}

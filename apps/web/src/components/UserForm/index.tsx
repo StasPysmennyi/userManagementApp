@@ -56,17 +56,12 @@ export const UserForm = ({
       <Controller
         name="dateOfBirthday"
         control={control}
-        render={({ field: { value, onChange, ...field } }) => (
+        render={({ field: { value, onChange } }) => (
           <DatePicker
             label="Date of Birthday (optional)"
-            value={value ? value.slice(0, 10) : ''}
-            onChange={e =>
-              onChange(
-                e.target.value ? new Date(e.target.value).toISOString() : '',
-              )
-            }
+            value={value ?? ''}
+            onChange={onChange}
             error={errors.dateOfBirthday?.message}
-            {...field}
           />
         )}
       />

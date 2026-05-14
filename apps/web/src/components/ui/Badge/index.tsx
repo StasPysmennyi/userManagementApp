@@ -1,4 +1,4 @@
-import { cn } from 'src/utils';
+import { classNames } from 'src/utils';
 import { ENUMS } from 'src/models';
 
 type Props = {
@@ -12,7 +12,7 @@ const ROLE_STYLES: Record<ENUMS.Role, string> = {
 
 export const Badge = ({ role }: Props) => (
   <span
-    className={cn(
+    className={classNames(
       'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
       ROLE_STYLES[role],
     )}>

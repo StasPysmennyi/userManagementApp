@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes } from 'react';
 
-import { cn } from 'src/utils';
+import { classNames } from 'src/utils';
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost';
 type Size = 'sm' | 'md' | 'lg';
@@ -36,7 +36,7 @@ export const Button = ({
 }: Props) => (
   <button
     disabled={disabled || isLoading}
-    className={cn(
+    className={classNames(
       'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors cursor-pointer',
       VARIANT_CLASSES[variant],
       SIZE_CLASSES[size],

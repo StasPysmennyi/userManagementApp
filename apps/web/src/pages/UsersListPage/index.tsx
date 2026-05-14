@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { formatDate } from '@uma/shared';
 
 import { ENUMS, TYPES } from 'src/models';
-import { useDeleteUser, useUsers } from 'src/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useDeleteUser,
+  useUsers,
+} from 'src/hooks';
+import { setSearchQuery } from 'src/store/slices/usersSlice';
 import {
   Badge,
   Button,
@@ -17,14 +23,19 @@ import {
 
 export const UsersListPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const search = useAppSelector(state => state.users.searchQuery);
   const { data: users, isLoading, isError } = useUsers();
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
 
   const filtered = users.filter(u =>
     u.fullName.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
 
   const handleDeleteConfirm = (id: string) => {
     deleteUser(id, { onSuccess: () => setDeletingId(null) });
@@ -59,22 +70,12 @@ export const UsersListPage = () => {
       </div>
 
       <div className="relative">
-        <Icons.SearchIcon
-          width={16}
-          height={16}
-          fill="#94a3b8"
-          // @ts-expect-error inline style for positioning only
-          style={{
-            position: 'absolute',
-            left: 12,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            pointerEvents: 'none',
-          }}
-        />
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
+          <Icons.SearchIcon width={16} height={16} fill="#94a3b8" />
+        </span>
         <input
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={handleSearch}
           placeholder="Search users..."
           className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
         />

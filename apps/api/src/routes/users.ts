@@ -1,5 +1,5 @@
 import { type Request, type Response, Router } from 'express';
-import { userFormSchema } from '@uma/shared';
+import { userFormSchema, userUpdateSchema } from '@uma/shared';
 
 import { prisma } from 'src/db/prisma';
 import { validate } from 'src/middleware/validate';
@@ -33,7 +33,7 @@ usersRouter.post(
 
 usersRouter.put(
   '/:id',
-  validate(userFormSchema.partial()),
+  validate(userUpdateSchema),
   async (req: Request, res: Response) => {
     const existing = await prisma.user.findUnique({
       where: { id: req.params.id },

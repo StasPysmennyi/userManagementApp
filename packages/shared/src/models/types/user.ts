@@ -1,4 +1,4 @@
-import { type Role } from '../enums/role';
+import { type Role } from '../enums';
 
 export type User = {
   id: string;

@@ -1,2 +1,4 @@
-export * as ENUMS from './enums';
-export * as TYPES from './types';
+import * as ENUMS from './enums';
+import * as TYPES from './types';
+
+export { ENUMS, TYPES };

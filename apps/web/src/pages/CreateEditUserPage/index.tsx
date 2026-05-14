@@ -24,7 +24,7 @@ export const CreateEditUserPage = () => {
     const payload = {
       fullName: values.fullName,
       role: values.role,
-      dateOfBirthday: values.dateOfBirthday || null,
+      dateOfBirthday: values.dateOfBirthday || (isEditMode ? null : undefined),
     };
 
     if (isEditMode) {
