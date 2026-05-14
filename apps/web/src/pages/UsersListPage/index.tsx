@@ -17,7 +17,7 @@ import {
 
 export const UsersListPage = () => {
   const navigate = useNavigate();
-  const { data: users = [], isLoading } = useUsers();
+  const { data: users, isLoading, isError } = useUsers();
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -29,6 +29,19 @@ export const UsersListPage = () => {
   const handleDeleteConfirm = (id: string) => {
     deleteUser(id, { onSuccess: () => setDeletingId(null) });
   };
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <p className="text-base font-semibold text-red-500">
+          Could not connect to API
+        </p>
+        <p className="mt-1 text-sm text-slate-500">
+          Make sure the API is running on http://localhost:3001
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">

@@ -1,14 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type CreateUserDto, type UpdateUserDto } from '@uma/shared';
+import { type CreateUserDto, type UpdateUserDto, type User } from '@uma/shared';
 
 import { usersService } from 'src/api/services';
 import { QUERY_KEYS } from 'src/constants';
 
-export const useUsers = () =>
-  useQuery({
+export const useUsers = () => {
+  const query = useQuery({
     queryKey: QUERY_KEYS.users,
     queryFn: usersService.getAll,
   });
+
+  return {
+    ...query,
+    data: Array.isArray(query.data) ? query.data : ([] as User[]),
+  };
+};
 
 export const useUser = (id: string) =>
   useQuery({
