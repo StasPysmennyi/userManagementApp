@@ -16,6 +16,7 @@
     "build:api": "yarn workspace @uma/api build",
     "lint": "yarn workspaces foreach -A run lint",
     "type-check": "yarn workspaces foreach -A run type-check",
+    "setup": "bash scripts/setup.sh",
     "prepare": "husky"
   },
   "devDependencies": {

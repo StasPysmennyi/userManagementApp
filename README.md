@@ -36,30 +36,21 @@ user-management-app/
 yarn install
 ```
 
-### 2. Create env files
+### 2. First-time setup (env + database)
 
 ```bash
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env
-cp apps/mobile/.env.example apps/mobile/.env
+yarn setup
 ```
 
-> **Android emulator?** In `apps/mobile/.env` change `API_URL` to `http://10.0.2.2:3001`
+This script automatically:
 
-### 3. Set up the database (first time only)
+- Creates all `.env` files from examples
+- Creates the SQLite database
+- Seeds it with sample data
 
-```bash
-# Generate Prisma client
-yarn workspace @uma/api db:generate
+> **Android emulator?** After setup, open `apps/mobile/.env` and change `API_URL` to `http://10.0.2.2:3001`
 
-# Create SQLite database and tables
-cd apps/api && npx prisma db push && cd ../..
-
-# Seed with sample data (optional)
-yarn workspace @uma/api db:seed
-```
-
-### 4. Run the apps
+### 3. Run the apps
 
 Open **two terminals**:
 
@@ -83,20 +74,20 @@ yarn web
 # Install CocoaPods (first time only)
 cd apps/mobile/ios && bundle exec pod install && cd ../../..
 
-# Start Metro bundler
+# Terminal 1 — Metro bundler
 yarn mobile
 
-# Run on simulator (in a new terminal)
+# Terminal 2 — Run on simulator
 yarn mobile:ios
 ```
 
 ### Android
 
 ```bash
-# Start Metro bundler
+# Terminal 1 — Metro bundler
 yarn mobile
 
-# Run on emulator (in a new terminal)
+# Terminal 2 — Run on emulator
 yarn mobile:android
 ```
 
@@ -121,13 +112,13 @@ yarn mobile:android
 # Run tests
 yarn workspace @uma/web test
 
-# Check types across all apps
+# Type check all apps
 yarn type-check
 
 # Lint all apps
 yarn lint
 
-# Prisma Studio (visual DB browser)
+# Prisma Studio (visual database browser)
 yarn workspace @uma/api db:studio
 ```
 
