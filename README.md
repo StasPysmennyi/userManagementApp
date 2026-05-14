@@ -1,123 +1,106 @@
 # User Management App
 
-A full-stack user management application built as a monorepo, featuring a Web app, Mobile app (React Native), and REST API backend.
+Full-stack user management monorepo: Web + Mobile + REST API.
 
 ## Tech Stack
 
-| Layer       | Technology                                                        |
-| ----------- | ----------------------------------------------------------------- |
-| **Web**     | React 19, Vite, Tailwind CSS v4, React Router v7, Motion          |
-| **Mobile**  | React Native 0.85.3, React Navigation, React Native Reanimated v4 |
-| **API**     | Express 5, Prisma, SQLite                                         |
-| **Shared**  | Zod v4, Luxon, TypeScript                                         |
-| **State**   | Redux Toolkit + TanStack Query v5                                 |
-| **Forms**   | React Hook Form + Zod                                             |
-| **Tooling** | Yarn Workspaces, Husky, lint-staged, ESLint, Prettier             |
+|             |                                                            |
+| ----------- | ---------------------------------------------------------- |
+| **Web**     | React 19, Vite 7, Tailwind CSS v4, React Router v7, Motion |
+| **Mobile**  | React Native 0.85.3, React Navigation, Reanimated v4       |
+| **API**     | Express 5, Prisma, SQLite                                  |
+| **Shared**  | Zod v4, Luxon, TypeScript                                  |
+| **State**   | Redux Toolkit + TanStack Query v5                          |
+| **Forms**   | React Hook Form + Zod                                      |
+| **Tooling** | Yarn Workspaces, Husky, lint-staged, ESLint, Prettier      |
 
 ## Project Structure
 
 ```
 user-management-app/
 ├── apps/
-│   ├── web/          # React web application
-│   ├── mobile/       # React Native mobile application
+│   ├── web/          # React web app
+│   ├── mobile/       # React Native app
 │   └── api/          # Express REST API
 └── packages/
-    └── shared/       # Shared Zod schemas, types, Luxon utils
+    └── shared/       # Zod schemas, types, Luxon utils (shared across all apps)
 ```
 
-## Prerequisites
+---
 
-- Node.js >= 22
-- Yarn 3.6.4+
-- For iOS: Xcode, CocoaPods (`gem install cocoapods`)
-- For Android: Android Studio, JDK 17+
+## Getting Started
 
-## Environment Setup
-
-Copy env files and fill in values:
-
-```bash
-cp .env.example .env
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env
-cp apps/mobile/.env.example apps/mobile/.env
-```
-
-**apps/api/.env**
-
-```env
-API_PORT=3001
-DATABASE_URL="file:./dev.db"
-```
-
-**apps/web/.env**
-
-```env
-VITE_API_URL=http://localhost:3001
-```
-
-**apps/mobile/.env**
-
-```env
-# iOS Simulator
-API_URL=http://localhost:3001
-
-# Android Emulator — use this instead:
-# API_URL=http://10.0.2.2:3001
-```
-
-## Installation
+### 1. Install dependencies
 
 ```bash
 yarn install
 ```
 
-## Running the API
+### 2. Create env files
 
 ```bash
-# Run database migrations
-yarn workspace @uma/api db:migrate
-
-# (Optional) Seed with sample data
-yarn workspace @uma/api db:seed
-
-# Start API in development mode
-yarn api
-# → http://localhost:3001
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+cp apps/mobile/.env.example apps/mobile/.env
 ```
 
-## Running the Web App
+> **Android emulator?** In `apps/mobile/.env` change `API_URL` to `http://10.0.2.2:3001`
+
+### 3. Set up the database (first time only)
 
 ```bash
+# Generate Prisma client
+yarn workspace @uma/api db:generate
+
+# Create SQLite database and tables
+cd apps/api && npx prisma db push && cd ../..
+
+# Seed with sample data (optional)
+yarn workspace @uma/api db:seed
+```
+
+### 4. Run the apps
+
+Open **two terminals**:
+
+```bash
+# Terminal 1 — API
+yarn api
+# → http://localhost:3001
+
+# Terminal 2 — Web
 yarn web
 # → http://localhost:3000
 ```
 
+---
+
 ## Running the Mobile App
 
-### Install dependencies first
+### iOS
 
 ```bash
-# iOS pods
+# Install CocoaPods (first time only)
 cd apps/mobile/ios && bundle exec pod install && cd ../../..
-```
 
-### Start Metro bundler
-
-```bash
+# Start Metro bundler
 yarn mobile
+
+# Run on simulator (in a new terminal)
+yarn mobile:ios
 ```
 
-### Run on device/simulator
+### Android
 
 ```bash
-# iOS
-yarn mobile:ios
+# Start Metro bundler
+yarn mobile
 
-# Android
+# Run on emulator (in a new terminal)
 yarn mobile:android
 ```
+
+---
 
 ## API Endpoints
 
@@ -130,35 +113,30 @@ yarn mobile:android
 | `DELETE` | `/api/users/:id` | Delete user    |
 | `GET`    | `/health`        | Health check   |
 
-## Running Tests
+---
+
+## Other Commands
 
 ```bash
-# Web unit tests
+# Run tests
 yarn workspace @uma/web test
 
-# Watch mode
-yarn workspace @uma/web test --watch
-```
-
-## Code Quality
-
-Pre-commit hooks run automatically on `git commit`:
-
-- ESLint with auto-fix
-- Prettier formatting
-- TypeScript type check
-
-Run manually:
-
-```bash
-yarn lint
+# Check types across all apps
 yarn type-check
+
+# Lint all apps
+yarn lint
+
+# Prisma Studio (visual DB browser)
+yarn workspace @uma/api db:studio
 ```
+
+---
 
 ## Branch Strategy
 
 ```
-main        ← stable production
+main        ← stable
   └── develop
         └── feature/*
 ```
