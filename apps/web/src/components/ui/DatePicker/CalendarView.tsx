@@ -1,6 +1,7 @@
 import { classNames } from 'src/utils';
 
 import { MONTHS_SHORT, WEEK_DAYS } from './constants';
+import { DayCell } from './DayCell';
 
 type Props = {
   cells: (number | null)[];
@@ -31,36 +32,21 @@ export const CalendarView = ({
     </div>
 
     <div className="grid grid-cols-7 gap-y-0.5">
-      {cells.map((day, i) => {
-        if (!day) {
-          return <span key={i} />;
-        }
-
-        const date = new Date(viewYear, viewMonth, day);
-        const isFuture = date > today;
-        const isSelected = selected && date.getTime() === selected.getTime();
-        const isToday = date.getTime() === today.getTime();
-
-        return (
-          <button
+      {cells.map((day, i) =>
+        day ? (
+          <DayCell
             key={i}
-            type="button"
-            disabled={isFuture}
-            onClick={() => onSelectDay(day)}
-            className={classNames(
-              'mx-auto flex h-8 w-8 items-center justify-center rounded-full text-sm transition-colors',
-              isFuture
-                ? 'cursor-not-allowed text-slate-300'
-                : 'hover:bg-indigo-50 hover:text-indigo-600',
-              isSelected
-                ? 'bg-indigo-600 font-semibold text-white hover:bg-indigo-600 hover:text-white'
-                : '',
-              isToday && !isSelected ? 'font-semibold text-indigo-600' : '',
-            )}>
-            {day}
-          </button>
-        );
-      })}
+            day={day}
+            viewYear={viewYear}
+            viewMonth={viewMonth}
+            today={today}
+            selected={selected}
+            onSelect={onSelectDay}
+          />
+        ) : (
+          <span key={i} />
+        ),
+      )}
     </div>
 
     <div className="mt-3 grid grid-cols-6 gap-1 border-t border-slate-100 pt-3">
@@ -81,6 +67,7 @@ export const CalendarView = ({
               isFuture
                 ? 'cursor-not-allowed text-slate-300'
                 : 'hover:bg-indigo-50 hover:text-indigo-600',
+
               isActive ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500',
             )}>
             {m}

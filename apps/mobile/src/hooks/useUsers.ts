@@ -30,8 +30,8 @@ const useCreateUser = () => {
 
   return useMutation({
     mutationFn: (data: CreateUserDto) => usersService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
       showSuccess('User created');
     },
     onError: () => showError('Failed to create user'),
@@ -43,9 +43,11 @@ const useUpdateUser = (id: string) => {
 
   return useMutation({
     mutationFn: (data: UpdateUserDto) => usersService.update(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user(id) });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users }),
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user(id) }),
+      ]);
       showSuccess('Changes saved');
     },
     onError: () => showError('Failed to save changes'),
@@ -57,8 +59,8 @@ const useDeleteUser = () => {
 
   return useMutation({
     mutationFn: (id: string) => usersService.remove(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
       showSuccess('User removed');
     },
     onError: () => showError('Failed to delete user'),

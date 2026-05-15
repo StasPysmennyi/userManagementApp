@@ -1,1 +1,1 @@
-export type { User, CreateUserDto, UpdateUserDto } from '@uma/shared';
+export type { CreateUserDto, UpdateUserDto, User } from '@uma/shared';

@@ -1,2 +1,2 @@
-export { ROLE_OPTIONS, ROLE_LABELS } from './roles';
-export { QUERY_KEYS } from '@uma/shared';
+export { QUERY_KEYS, ROLE_LABELS, ROLE_OPTIONS } from '@uma/shared';
+export { ROUTES } from './routes';

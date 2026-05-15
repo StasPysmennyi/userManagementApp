@@ -1,2 +1,4 @@
-export { usersService } from './users';
-export { queryClient } from '../queryClient';
+import { queryClient } from '../queryClient';
+import { usersService } from './users';
+
+export { queryClient, usersService };

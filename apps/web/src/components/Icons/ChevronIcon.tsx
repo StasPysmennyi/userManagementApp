@@ -5,11 +5,11 @@ type Props = {
   direction?: 'up' | 'down' | 'left' | 'right';
 };
 
-const ROTATION: Record<NonNullable<Props['direction']>, number> = {
-  up: 180,
-  down: 0,
-  left: 90,
-  right: -90,
+const ROTATION_CLASS: Record<NonNullable<Props['direction']>, string> = {
+  up: 'rotate-180',
+  down: 'rotate-0',
+  left: 'rotate-90',
+  right: '-rotate-90',
 };
 
 export const ChevronIcon = ({
@@ -24,10 +24,7 @@ export const ChevronIcon = ({
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{
-      transform: `rotate(${ROTATION[direction]}deg)`,
-      transition: 'transform 0.2s',
-    }}>
+    className={`transition-transform duration-200 ${ROTATION_CLASS[direction]}`}>
     <path
       d="M6 9l6 6 6-6"
       stroke={fill}

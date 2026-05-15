@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
 
 import { type UserFormValues } from '@uma/shared';
+import { useNavigate, useParams } from 'react-router';
+
+import { Button, Modal, Spinner, UserForm } from 'src/components';
 
 import {
   useCreateUser,
@@ -9,7 +11,8 @@ import {
   useUpdateUser,
   useUser,
 } from 'src/hooks';
-import { Button, Modal, UserForm } from 'src/components';
+
+import { ROUTES } from 'src/constants';
 
 export const CreateEditUserPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +25,9 @@ export const CreateEditUserPage = () => {
   const { mutate: updateUser, isPending: isUpdating } = useUpdateUser(id ?? '');
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
 
+  const goBack = () => navigate(ROUTES.home);
+  const toggleConfirm = () => setIsConfirmOpen(prev => !prev);
+
   const handleSubmit = (values: UserFormValues) => {
     const payload = {
       fullName: values.fullName,
@@ -30,9 +36,9 @@ export const CreateEditUserPage = () => {
     };
 
     if (isEditMode) {
-      updateUser(payload, { onSuccess: () => navigate('/') });
+      updateUser(payload, { onSuccess: goBack });
     } else {
-      createUser(payload, { onSuccess: () => navigate('/') });
+      createUser(payload, { onSuccess: goBack });
     }
   };
 
@@ -40,16 +46,10 @@ export const CreateEditUserPage = () => {
     if (!id) {
       return;
     }
-    deleteUser(id, { onSuccess: () => navigate('/') });
+    deleteUser(id, { onSuccess: goBack });
   };
 
-  if (isEditMode && isLoadingUser) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
-      </div>
-    );
-  }
+  if (isEditMode && isLoadingUser) return <Spinner />;
 
   return (
     <div className="mx-auto max-w-lg">
@@ -63,30 +63,24 @@ export const CreateEditUserPage = () => {
             : 'Fill in the details to create a new user'}
         </p>
       </div>
+
       <div className="rounded-2xl border border-slate-200 bg-white p-6">
         <UserForm
           user={user}
           isLoading={isCreating || isUpdating}
           onSubmit={handleSubmit}
-          onDelete={
-            isEditMode ? () => setIsConfirmOpen(prev => !prev) : undefined
-          }
+          onDelete={isEditMode ? toggleConfirm : undefined}
           isDeleting={isDeleting}
         />
       </div>
 
-      <Modal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(prev => !prev)}
-        title="Remove User">
+      <Modal isOpen={isConfirmOpen} onClose={toggleConfirm} title="Remove User">
         <p className="mb-5 text-sm text-slate-600">
           Are you sure you want to remove this user? This action cannot be
           undone.
         </p>
         <div className="flex justify-end gap-3">
-          <Button
-            variant="secondary"
-            onClick={() => setIsConfirmOpen(prev => !prev)}>
+          <Button variant="secondary" onClick={toggleConfirm}>
             Cancel
           </Button>
           <Button

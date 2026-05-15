@@ -1,10 +1,13 @@
-import { Controller } from 'react-hook-form';
 import { type UserFormValues } from '@uma/shared';
+import { Controller } from 'react-hook-form';
+
+import { Button, DatePicker, Input, Select } from 'src/components/ui';
+
+import { useUserForm } from 'src/hooks';
+
+import { ROLE_OPTIONS } from 'src/constants';
 
 import { type TYPES } from 'src/models';
-import { useUserForm } from 'src/hooks';
-import { ROLE_OPTIONS } from 'src/constants';
-import { Button, DatePicker, Input, Select } from 'src/components/ui';
 
 type Props = {
   user?: TYPES.User;
@@ -67,7 +70,7 @@ export const UserForm = ({
       />
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-        {isEditMode && onDelete ? (
+        {isEditMode && onDelete && (
           <Button
             type="button"
             variant="danger"
@@ -75,7 +78,7 @@ export const UserForm = ({
             onClick={onDelete}>
             Remove User
           </Button>
-        ) : null}
+        )}
         <Button type="submit" isLoading={isLoading} className="sm:ml-auto">
           {isEditMode ? 'Save Changes' : 'Create User'}
         </Button>

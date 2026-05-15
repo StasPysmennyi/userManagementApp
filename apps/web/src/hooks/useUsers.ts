@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type CreateUserDto, type UpdateUserDto, type User } from '@uma/shared';
 
 import { usersService } from 'src/api/services';
+
 import { QUERY_KEYS } from 'src/constants';
 
 export const useUsers = () => {
@@ -38,10 +39,11 @@ export const useUpdateUser = (id: string) => {
 
   return useMutation({
     mutationFn: (data: UpdateUserDto) => usersService.update(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user(id) });
-    },
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.users }),
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user(id) }),
+      ]),
   });
 };
 

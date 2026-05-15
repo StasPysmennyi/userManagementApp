@@ -16,8 +16,6 @@ export default defineConfig([
     plugins: {
       prettier,
       react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
     },
     extends: [

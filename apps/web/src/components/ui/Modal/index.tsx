@@ -1,5 +1,6 @@
-import { AnimatePresence, motion } from 'motion/react';
 import { type ReactNode } from 'react';
+
+import { AnimatePresence, motion } from 'motion/react';
 
 type Props = {
   isOpen: boolean;
@@ -10,7 +11,7 @@ type Props = {
 
 export const Modal = ({ isOpen, onClose, title, children }: Props) => (
   <AnimatePresence>
-    {isOpen ? (
+    {isOpen && (
       <motion.div
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
         initial={{ opacity: 0 }}
@@ -30,6 +31,6 @@ export const Modal = ({ isOpen, onClose, title, children }: Props) => (
           {children}
         </motion.div>
       </motion.div>
-    ) : null}
+    )}
   </AnimatePresence>
 );

@@ -7,7 +7,7 @@ type Option = { value: string; label: string };
 type Props = SelectHTMLAttributes<HTMLSelectElement> & {
   label?: string;
   error?: string;
-  options: Option[];
+  options: readonly Option[];
   placeholder?: string;
 };
 
@@ -17,13 +17,14 @@ export const Select = forwardRef<HTMLSelectElement, Props>(
 
     return (
       <div className="flex flex-col gap-1.5">
-        {label ? (
+        {label && (
           <label
             htmlFor={selectId}
             className="text-sm font-medium text-slate-700">
             {label}
           </label>
-        ) : null}
+        )}
+
         <select
           ref={ref}
           id={selectId}

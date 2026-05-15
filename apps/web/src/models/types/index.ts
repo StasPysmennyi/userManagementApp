@@ -1,1 +1,1 @@
-export type { User, CreateUserDto, UpdateUserDto } from './user';
+export type { CreateUserDto, UpdateUserDto, User } from './user';

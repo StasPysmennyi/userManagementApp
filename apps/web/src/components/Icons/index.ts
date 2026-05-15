@@ -1,8 +1,19 @@
-export { CalendarIcon } from './CalendarIcon';
-export { ChevronIcon } from './ChevronIcon';
-export { EditIcon } from './EditIcon';
-export { PlusIcon } from './PlusIcon';
-export { SearchIcon } from './SearchIcon';
-export { TrashIcon } from './TrashIcon';
-export { UserIcon } from './UserIcon';
-export { CloseIcon } from './CloseIcon';
+import { CalendarIcon } from './CalendarIcon';
+import { ChevronIcon } from './ChevronIcon';
+import { CloseIcon } from './CloseIcon';
+import { EditIcon } from './EditIcon';
+import { PlusIcon } from './PlusIcon';
+import { SearchIcon } from './SearchIcon';
+import { TrashIcon } from './TrashIcon';
+import { UserIcon } from './UserIcon';
+
+export {
+  CalendarIcon,
+  ChevronIcon,
+  CloseIcon,
+  EditIcon,
+  PlusIcon,
+  SearchIcon,
+  TrashIcon,
+  UserIcon,
+};

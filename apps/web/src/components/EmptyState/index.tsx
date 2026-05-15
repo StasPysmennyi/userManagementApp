@@ -16,9 +16,8 @@ export const EmptyState = ({ title, description }: Props) => (
     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
       <Icons.UserIcon width={32} height={32} fill="#94a3b8" />
     </div>
+
     <h3 className="mb-1 text-base font-semibold text-slate-700">{title}</h3>
-    {description ? (
-      <p className="text-sm text-slate-500">{description}</p>
-    ) : null}
+    {description && <p className="text-sm text-slate-500">{description}</p>}
   </motion.div>
 );
