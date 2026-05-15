@@ -68,6 +68,8 @@ yarn web
 
 ## Running the Mobile App
 
+> **Java requirement:** Android build requires Java 17+.
+
 ### iOS
 
 ```bash
