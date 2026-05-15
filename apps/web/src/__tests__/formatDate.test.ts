@@ -1,6 +1,5 @@
-import { describe, expect, it } from 'vitest';
-
 import { formatDate } from '@uma/shared';
+import { describe, expect, it } from 'vitest';
 
 describe('formatDate', () => {
   it('formats a valid ISO date', () => {

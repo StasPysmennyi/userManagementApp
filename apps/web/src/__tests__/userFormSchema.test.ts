@@ -1,7 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
 import { userFormSchema } from '@uma/shared';
 import { Role } from '@uma/shared';
+import { describe, expect, it } from 'vitest';
 
 describe('userFormSchema', () => {
   it('validates a valid user form', () => {

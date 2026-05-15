@@ -106,12 +106,39 @@ yarn mobile:android
 
 ---
 
+## Testing
+
+```bash
+# Run all tests (web + mobile)
+yarn test
+
+# Web only (Vitest)
+yarn test:web
+
+# Mobile only (Jest)
+yarn test:mobile
+
+# Web in watch mode
+yarn workspace @uma/web test:watch
+```
+
+### What's tested
+
+| App    | File                                       | What it covers                              |
+| ------ | ------------------------------------------ | ------------------------------------------- |
+| Web    | `__tests__/formatDate.test.ts`             | `formatDate` — null, invalid ISO, valid ISO |
+| Web    | `__tests__/userFormSchema.test.ts`         | Zod schema — valid/invalid payloads         |
+| Web    | `__tests__/buildCalendarCells.test.ts`     | Calendar grid — lengths, offsets, leap year |
+| Web    | `__tests__/components/Badge.test.tsx`      | Badge — label and classes per role          |
+| Web    | `__tests__/components/EmptyState.test.tsx` | EmptyState — title, optional description    |
+| Mobile | `__tests__/calculateAge.test.ts`           | Age calc — null, invalid, birthday logic    |
+| Mobile | `__tests__/Badge.test.tsx`                 | Badge — label and styles per role           |
+
+---
+
 ## Other Commands
 
 ```bash
-# Run tests
-yarn workspace @uma/web test
-
 # Type check all apps
 yarn type-check
 

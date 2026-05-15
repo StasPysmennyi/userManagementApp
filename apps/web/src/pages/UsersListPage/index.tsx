@@ -16,6 +16,7 @@ export const UsersListPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const search = useAppSelector(state => state.users.searchQuery);
+
   const { data: users, isLoading, isError } = useUsers();
 
   const filtered = users.filter(u =>
@@ -26,6 +27,7 @@ export const UsersListPage = () => {
     dispatch(setSearchQuery(e.target.value));
 
   const handleEdit = (id: string) => navigate(ROUTES.userEdit(id));
+  const handleAddUser = () => navigate(ROUTES.usersNew);
 
   if (isError) {
     return (
@@ -47,9 +49,7 @@ export const UsersListPage = () => {
           <h1 className="text-2xl font-bold text-slate-900">Users</h1>
           <p className="text-sm text-slate-500">{users.length} total</p>
         </div>
-        <Button
-          onClick={() => navigate(ROUTES.usersNew)}
-          className="w-full sm:w-auto">
+        <Button onClick={handleAddUser} className="w-full sm:w-auto">
           <Icons.PlusIcon width={16} height={16} />
           Add User
         </Button>
