@@ -1,5 +1,5 @@
-import { usersService as service } from '@uma/shared';
+import { createUsersService } from '@uma/shared';
 
-export const usersService = service(
+export const usersService = createUsersService(
   import.meta.env.VITE_API_URL ?? 'http://localhost:3001',
 );
