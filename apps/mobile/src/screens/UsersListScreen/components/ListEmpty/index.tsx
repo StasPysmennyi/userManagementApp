@@ -8,10 +8,11 @@ import styles from './styles';
 
 type Props = {
   isLoading: boolean;
+  isError: boolean;
   search: string;
 };
 
-const ListEmpty = ({ isLoading, search }: Props) => {
+const ListEmpty = ({ isLoading, isError, search }: Props) => {
   if (isLoading) {
     return (
       <ActivityIndicator
@@ -20,6 +21,10 @@ const ListEmpty = ({ isLoading, search }: Props) => {
         color={COLORS.primary}
       />
     );
+  }
+
+  if (isError) {
+    return <EmptyState title="Something went wrong" />;
   }
 
   return (

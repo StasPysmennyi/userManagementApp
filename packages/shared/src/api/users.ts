@@ -7,7 +7,7 @@ import {
 } from '../models/types';
 
 const createUsersService = (baseURL: string) => {
-  const api = axios.create({ baseURL });
+  const api = axios.create({ baseURL, timeout: 5000 });
 
   const getAll = async (): Promise<User[]> => {
     const { data } = await api.get<User[]>('/api/users');
