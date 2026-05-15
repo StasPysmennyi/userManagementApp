@@ -1,33 +1,19 @@
-import { type ChangeEvent, useState } from 'react';
+import { type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { formatDate } from '@uma/shared';
 
 import { ENUMS, TYPES } from 'src/models';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useDeleteUser,
-  useUsers,
-} from 'src/hooks';
+import { useAppDispatch, useAppSelector, useUsers } from 'src/hooks';
 import { setSearchQuery } from 'src/store/slices/usersSlice';
-import {
-  Badge,
-  Button,
-  EmptyState,
-  Icons,
-  Modal,
-  UserForm,
-} from 'src/components';
+import { Badge, Button, EmptyState, Icons } from 'src/components';
 
 export const UsersListPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const search = useAppSelector(state => state.users.searchQuery);
   const { data: users, isLoading, isError } = useUsers();
-  const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const filtered = users.filter(u =>
     u.fullName.toLowerCase().includes(search.toLowerCase()),
@@ -35,10 +21,6 @@ export const UsersListPage = () => {
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchQuery(e.target.value));
-  };
-
-  const handleDeleteConfirm = (id: string) => {
-    deleteUser(id, { onSuccess: () => setDeletingId(null) });
   };
 
   if (isError) {
@@ -132,19 +114,12 @@ export const UsersListPage = () => {
                         {formatDate(user.dateOfBirthday)}
                       </td>
                       <td className="px-5 py-4">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => navigate(`/users/${user.id}/edit`)}>
                             <Icons.EditIcon width={15} height={15} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setDeletingId(user.id)}
-                            className="text-red-500 hover:bg-red-50">
-                            <Icons.TrashIcon width={15} height={15} />
                           </Button>
                         </div>
                       </td>
@@ -175,21 +150,12 @@ export const UsersListPage = () => {
                         {formatDate(user.dateOfBirthday)}
                       </span>
                     </div>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => navigate(`/users/${user.id}/edit`)}>
-                        <Icons.EditIcon width={15} height={15} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeletingId(user.id)}
-                        className="text-red-500 hover:bg-red-50">
-                        <Icons.TrashIcon width={15} height={15} />
-                      </Button>
-                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate(`/users/${user.id}/edit`)}>
+                      <Icons.EditIcon width={15} height={15} />
+                    </Button>
                   </div>
                 </motion.div>
               ))}
@@ -197,27 +163,6 @@ export const UsersListPage = () => {
           </div>
         </>
       )}
-
-      <Modal
-        isOpen={!!deletingId}
-        onClose={() => setDeletingId(null)}
-        title="Remove User">
-        <p className="mb-5 text-sm text-slate-600">
-          Are you sure you want to remove this user? This action cannot be
-          undone.
-        </p>
-        <div className="flex justify-end gap-3">
-          <Button variant="secondary" onClick={() => setDeletingId(null)}>
-            Cancel
-          </Button>
-          <Button
-            variant="danger"
-            isLoading={isDeleting}
-            onClick={() => deletingId && handleDeleteConfirm(deletingId)}>
-            Remove
-          </Button>
-        </div>
-      </Modal>
     </div>
   );
 };

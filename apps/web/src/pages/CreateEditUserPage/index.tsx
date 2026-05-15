@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import { type UserFormValues } from '@uma/shared';
@@ -8,12 +9,13 @@ import {
   useUpdateUser,
   useUser,
 } from 'src/hooks';
-import { UserForm } from 'src/components';
+import { Button, Modal, UserForm } from 'src/components';
 
 export const CreateEditUserPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEditMode = !!id;
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const { data: user, isLoading: isLoadingUser } = useUser(id ?? '');
   const { mutate: createUser, isPending: isCreating } = useCreateUser();
@@ -34,7 +36,7 @@ export const CreateEditUserPage = () => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDeleteConfirm = () => {
     if (!id) {
       return;
     }
@@ -66,10 +68,35 @@ export const CreateEditUserPage = () => {
           user={user}
           isLoading={isCreating || isUpdating}
           onSubmit={handleSubmit}
-          onDelete={isEditMode ? handleDelete : undefined}
+          onDelete={
+            isEditMode ? () => setIsConfirmOpen(prev => !prev) : undefined
+          }
           isDeleting={isDeleting}
         />
       </div>
+
+      <Modal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(prev => !prev)}
+        title="Remove User">
+        <p className="mb-5 text-sm text-slate-600">
+          Are you sure you want to remove this user? This action cannot be
+          undone.
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => setIsConfirmOpen(prev => !prev)}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            isLoading={isDeleting}
+            onClick={handleDeleteConfirm}>
+            Remove
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import { userFormSchema, type UserFormValues } from '@uma/shared';
 import { type TYPES } from 'src/models';
 
 type UseUserFormParams = {
-  defaultValues?: Partial<UserFormValues>;
   user?: TYPES.User;
 };
 
