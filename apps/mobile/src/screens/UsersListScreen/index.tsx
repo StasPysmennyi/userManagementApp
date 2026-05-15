@@ -19,7 +19,7 @@ type Props = ScreenProps<ENUMS.ScreenNames.USERS_LIST>;
 const UsersListScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const search = useAppSelector(state => state.users.searchQuery);
-  const { data: users = [], isLoading } = useUsers();
+  const { data: users = [], isLoading, isError } = useUsers();
   const filtered = users.filter(u =>
     u.fullName.toLowerCase().includes(search.toLowerCase()),
   );
@@ -65,16 +65,18 @@ const UsersListScreen = ({ navigation }: Props) => {
       <SearchBar value={search} onChangeText={handleSearch} />
 
       <FlatList
-        data={isLoading ? [] : filtered}
+        data={isLoading || isError ? [] : filtered}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         contentContainerStyle={[
           styles.list,
-          !isLoading && filtered.length === 0 && styles.emptyList,
+          !isLoading && !isError && filtered.length === 0 && styles.emptyList,
         ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={<ListEmpty isLoading={isLoading} search={search} />}
+        ListEmptyComponent={
+          <ListEmpty isLoading={isLoading} isError={isError} search={search} />
+        }
       />
     </KeyboardAvoidingView>
   );
