@@ -1,7 +1,9 @@
+// @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { Badge } from 'src/components/ui/Badge';
+
 import { ENUMS } from 'src/models';
 
 describe('Badge', () => {
