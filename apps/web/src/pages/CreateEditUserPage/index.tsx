@@ -49,7 +49,9 @@ export const CreateEditUserPage = () => {
     deleteUser(id, { onSuccess: goBack });
   };
 
-  if (isEditMode && isLoadingUser) return <Spinner />;
+  if (isEditMode && isLoadingUser) {
+    return <Spinner />;
+  }
 
   return (
     <div className="mx-auto max-w-lg">

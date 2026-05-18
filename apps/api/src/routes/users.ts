@@ -11,7 +11,7 @@ usersRouter.get('/', async (_req: Request, res: Response) => {
   res.json(users);
 });
 
-usersRouter.get('/:id', async (req: Request, res: Response) => {
+usersRouter.get('/:id', async (req: Request<{ id: string }>, res: Response) => {
   const user = await prisma.user.findUnique({ where: { id: req.params.id } });
 
   if (!user) {
@@ -34,7 +34,7 @@ usersRouter.post(
 usersRouter.put(
   '/:id',
   validate(userUpdateSchema),
-  async (req: Request, res: Response) => {
+  async (req: Request<{ id: string }>, res: Response) => {
     const existing = await prisma.user.findUnique({
       where: { id: req.params.id },
     });
@@ -52,16 +52,19 @@ usersRouter.put(
   },
 );
 
-usersRouter.delete('/:id', async (req: Request, res: Response) => {
-  const existing = await prisma.user.findUnique({
-    where: { id: req.params.id },
-  });
+usersRouter.delete(
+  '/:id',
+  async (req: Request<{ id: string }>, res: Response) => {
+    const existing = await prisma.user.findUnique({
+      where: { id: req.params.id },
+    });
 
-  if (!existing) {
-    res.status(404).json({ message: 'User not found' });
-    return;
-  }
+    if (!existing) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
 
-  await prisma.user.delete({ where: { id: req.params.id } });
-  res.status(204).send();
-});
+    await prisma.user.delete({ where: { id: req.params.id } });
+    res.status(204).send();
+  },
+);
